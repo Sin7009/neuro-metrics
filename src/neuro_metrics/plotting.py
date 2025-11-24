@@ -10,6 +10,13 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 from typing import Optional, Union, List, Tuple
+
+try:
+    from scipy import stats
+    HAS_SCIPY = True
+except ImportError:
+    HAS_SCIPY = False
+
 from .colors import (
     SBER_GREEN, SBER_DARK_GRAY, SBER_LIGHT_GRAY, 
     get_palette, get_color
@@ -612,7 +619,11 @@ def plot_histogram(data: Union[pd.Series, np.ndarray, list],
     
     # Add KDE if requested
     if kde:
-        from scipy import stats
+        if not HAS_SCIPY:
+            raise ImportError(
+                "scipy is required for KDE plotting. "
+                "Install it with: pip install scipy"
+            )
         density = stats.gaussian_kde(data_array)
         xs = np.linspace(data_array.min(), data_array.max(), 200)
         # Scale KDE to match histogram

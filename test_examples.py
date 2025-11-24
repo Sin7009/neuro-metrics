@@ -133,7 +133,6 @@ def main():
         print("=" * 60)
         print()
         print("Generated plots saved to /tmp/:")
-        import os
         for f in os.listdir('/tmp'):
             if f.startswith('test_') and f.endswith('.png'):
                 print(f"  - {f}")
